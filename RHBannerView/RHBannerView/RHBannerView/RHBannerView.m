@@ -82,17 +82,19 @@
     [_collection reloadData];
 }
 
-#pragma mark - config banner
+#pragma mark - public
 
 - (void)configBannerWithModels:(NSArray<RHBannerModel *> *)models {
     
-    if (models.count == 0) {
-        
-        return;
-    }
-    
     [self.dataArr removeAllObjects];
     [self removeTimer];
+    _pageControl.numberOfPages = 0;
+    
+    if (models.count == 0) {
+        
+        [_collection reloadData];
+        return;
+    }
     
     if (models.count == 1) {
         
@@ -109,6 +111,21 @@
     }
     [_collection reloadData];
 }
+
+- (void)run {
+    
+    if (self.dataArr.count > 1) {
+        
+        [self addTimer];
+    }
+}
+
+- (void)stop {
+    
+    [self removeTimer];
+}
+
+#pragma mark - private
 
 - (void)makeConstraintForPageControlWithPageStyle:(RHBannerViewPageStyle)pageStyle {
     
@@ -206,21 +223,23 @@
     
     if (scrollView == _collection) {
         
-        _page = _collection.contentOffset.x / self.bounds.size.width;
-        
-        if (_collection.contentOffset.x == 0) {
+        if (self.dataArr.count > 1) {
             
-            _pageControl.currentPage = self.dataArr.count - 3;
-            [_collection setContentOffset:CGPointMake(self.bounds.size.width * (self.dataArr.count - 2), 0)];
-        } else if (_collection.contentOffset.x == self.bounds.size.width * (self.dataArr.count - 1)) {
+            _page = _collection.contentOffset.x / self.bounds.size.width;
             
-            _pageControl.currentPage = 0;
-            [_collection setContentOffset:CGPointMake(self.bounds.size.width, 0)];
-        } else if (_collection.contentOffset.x == self.bounds.size.width * _page) {
-            
-            _pageControl.currentPage = _page - 1;
+            if (_collection.contentOffset.x == 0) {
+                
+                _pageControl.currentPage = self.dataArr.count - 3;
+                [_collection setContentOffset:CGPointMake(self.bounds.size.width * (self.dataArr.count - 2), 0)];
+            } else if (_collection.contentOffset.x == self.bounds.size.width * (self.dataArr.count - 1)) {
+                
+                _pageControl.currentPage = 0;
+                [_collection setContentOffset:CGPointMake(self.bounds.size.width, 0)];
+            } else if (_collection.contentOffset.x == self.bounds.size.width * _page) {
+                
+                _pageControl.currentPage = _page - 1;
+            }
         }
-        
     }
 }
 

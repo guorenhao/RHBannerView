@@ -57,10 +57,21 @@
     if (bannerView == _bannerView) {
         
         NSLog(@"点击了上边bannerView第%@个图片", @(index));
+        static int flag = 0;
+        flag ^= 1;
+        if (flag) {
+            
+            [bannerView stop];
+        } else {
+            
+            [bannerView run];
+        }
     } else {
         
         NSLog(@"点击了下边bannerView2第%@个图片", @(index));
     }
+    
+    
     
 }
 

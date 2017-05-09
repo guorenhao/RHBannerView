@@ -43,6 +43,15 @@ typedef NS_ENUM (NSInteger, RHBannerViewPageStyle) {
  */
 - (void)configBannerWithModels:(NSArray<RHBannerModel *> *)models;
 
+/**
+ 开始轮播  banner图片大于1才会轮播
+ */
+- (void)run;
+
+/**
+ 停止轮播
+ */
+- (void)stop;
 
 @end
 @protocol RHBannerViewDelegate <NSObject>
